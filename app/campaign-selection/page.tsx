@@ -1,9 +1,26 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { Facebook, Chrome, Clock } from "lucide-react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function CampaignSelectionPage() {
+  const [leadDialogOpen, setLeadDialogOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  const handleLeadForm = () => {
+    setLeadDialogOpen(true)
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      router.push("/campaign-setup?platform=meta&objective=lead-form")
+    }, 1500)
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground p-4">
       <div className="max-w-4xl mx-auto">
@@ -42,14 +59,13 @@ export default function CampaignSelectionPage() {
                     Brand Awareness
                   </Button>
                 </Link>
-                <Link href="/campaign-setup?platform=meta&objective=lead-form">
-                  <Button
-                    variant="outline"
-                    className="w-full h-12 border-border text-card-foreground hover:bg-accent bg-transparent text-sm"
-                  >
-                    Lead Form
-                  </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  onClick={handleLeadForm}
+                  className="w-full h-12 border-border text-card-foreground hover:bg-accent bg-transparent text-sm"
+                >
+                  Lead Form
+                </Button>
                 <Link href="/campaign-setup?platform=meta&objective=website-visit">
                   <Button
                     variant="outline"
@@ -130,6 +146,33 @@ export default function CampaignSelectionPage() {
           </Link>
         </div>
       </div>
+
+      {leadDialogOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Creating a Lead Form"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+        >
+          <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 text-card-foreground shadow-lg">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                <span className="text-white font-bold">m</span>
+              </div>
+              <h3 className="text-lg font-semibold">Lead Form Creation For Meta</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-6">Creating a Lead Form for your Ad. Please wait...</p>
+
+            <div className="flex items-center justify-center py-6">
+              <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+            </div>
+
+            <p className="text-xs text-muted-foreground text-center">
+              Secured payment interface. Do not refresh this window.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,9 +1,14 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
+import { useTheme } from "next-themes"
 
 export default function LandingPage() {
+  const { theme, setTheme } = useTheme()
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -15,11 +20,38 @@ export default function LandingPage() {
             </div>
             <h1 className="text-2xl font-bold text-foreground">TEadify</h1>
           </div>
-          <Link href="/auth">
-            <Button variant="outline" className="text-foreground border-border hover:bg-accent bg-transparent">
-              Sign In
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Background</span>
+              <div className="inline-flex rounded-md border border-border overflow-hidden">
+                <button
+                  type="button"
+                  aria-pressed={theme !== "light"}
+                  onClick={() => setTheme("dark")}
+                  className={`px-3 py-1 text-sm transition-colors ${
+                    theme !== "light" ? "bg-primary text-primary-foreground" : "bg-transparent text-foreground"
+                  }`}
+                >
+                  Black
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={theme === "light"}
+                  onClick={() => setTheme("light")}
+                  className={`px-3 py-1 text-sm transition-colors ${
+                    theme === "light" ? "bg-primary text-primary-foreground" : "bg-transparent text-foreground"
+                  }`}
+                >
+                  White
+                </button>
+              </div>
+            </div>
+            <Link href="/auth">
+              <Button variant="outline" className="text-foreground border-border hover:bg-accent bg-transparent">
+                Sign In
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
